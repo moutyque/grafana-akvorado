@@ -10,6 +10,17 @@ on:
       - master
       - main
 
+  workflow_dispatch:
+    inputs:
+      run-e2e:
+        description: 'Run E2E tests'
+        required: false
+        default: 'false'
+      run-backend:
+        description: 'Run backend tests'
+        required: false
+        default: 'false'
+
 permissions: read-all
 
 jobs:
