@@ -14,7 +14,6 @@ services:
       - 10944:3000/tcp
     volumes:
       - ./dist:/var/lib/grafana/plugins/ovh-akvorado-datasource
-      - ./netsage-sankey-panel:/var/lib/grafana/plugins/netsage-sankey-panel
       - ./provisioning:/etc/grafana/provisioning
       - .:/root/ovh-akvorado-datasource
 
