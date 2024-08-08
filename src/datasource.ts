@@ -94,7 +94,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         return frame;
       }
       return toDataFrame({
-        name: 'l3bps',
+        name: target.unit,
         fields: fields,
       });
     });
@@ -105,7 +105,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   private emptyResponse() {
     return toDataFrame({
-      name: 'l3bps',
+      name: '',
       fields: [],
     });
   }
