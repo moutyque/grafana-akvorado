@@ -92,8 +92,6 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         const frame = toDataFrame(foramtedData);
         frame.name = 'sankey';
         return frame;
-      } else {
-        console.log('Unknown query type');
       }
       return toDataFrame({
         name: 'l3bps',

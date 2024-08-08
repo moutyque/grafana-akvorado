@@ -75,7 +75,10 @@ export function QueryEditor({ query, onChange, datasource }: Props) {
           .sort((a, b) => a.label.localeCompare(b.label)) ?? []
       );
     } catch (error) {
-      console.error('Failed to fetch dimensions:', error);
+        appEvents.publish({
+            type: AppEvents.alertError.name,
+            payload: ['Failed to fetch dimensions:'+error],
+        });
       return [];
     }
   };
