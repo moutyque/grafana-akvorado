@@ -15,7 +15,24 @@
       "large": "img/logo.svg"
     },
     "links": [],
-    "screenshots": [],
+    "screenshots": [
+      {
+        "name": "Connection",
+        "path": "img/connection.png"
+      },
+      {
+        "name": "Data source",
+        "path": "img/datasource.png"
+      },
+      {
+        "name": "Explore data",
+        "path": "img/explore.png"
+      },
+      {
+        "name": "Build powerful dashboard",
+        "path": "img/sankey.png"
+      }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
