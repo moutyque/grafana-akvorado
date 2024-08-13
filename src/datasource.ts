@@ -63,7 +63,8 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         const response = await this.post<TimeseriesResponse>(endpoint, body, '');
         fields.push({ name: 'Time', type: FieldType.time, values: response.data.t });
         response.data.rows.forEach((r, i) => {
-          fields.push({ name: r[0], type: FieldType.number, values: response.data.points[i] });
+          //const labels = this.buildLabels(target.dimensions!!, r); //TODO: add labels: Labels to type
+          fields.push({ name: r.join(' - '),  type: FieldType.number, values: response.data.points[i] });
         });
       } else if (target.type === 'sankey') {
         const response = await this.post<SandkeyResponse>(endpoint, body, '');
