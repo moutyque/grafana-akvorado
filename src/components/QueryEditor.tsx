@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { InlineField, Input, Stack, Select, AsyncMultiSelect } from '@grafana/ui';
+import React, { ChangeEvent, useState } from 'react';
+import {InlineField, Input, Stack, Select, AsyncMultiSelect, useTheme2} from '@grafana/ui';
 import { QueryEditorProps, SelectableValue, AppEvents } from '@grafana/data';
 import { DataSource, queryTypes, queryUnits } from '../datasource';
 import { Configuration, DEFAULT_LIMIT, MyDataSourceOptions, MyQuery } from '../types';
@@ -23,7 +23,6 @@ export function QueryEditor({ query, onChange, datasource }: Props) {
   );
 
   const [expression, setExpression] = useState<string>('InIfBoundary = external');
-  const [isDark, setIsDark] = useState(false);
 
   const getFilterTheme = (isDark: boolean) => [
     syntaxHighlighting(
@@ -36,24 +35,9 @@ export function QueryEditor({ query, onChange, datasource }: Props) {
     ),
     EditorView.theme({}, { dark: isDark }),
   ];
+  const theme = useTheme2();
 
-  useEffect(() => {
-    // Example: Toggle theme based on some condition
-    const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDark(darkModeMediaQuery.matches);
-
-    const handleChange = (e: { matches: boolean | ((prevState: boolean) => boolean) }) => {
-      setIsDark(e.matches);
-    };
-
-    darkModeMediaQuery.addEventListener('change', handleChange);
-
-    return () => {
-      darkModeMediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
-
-  const filterTheme = getFilterTheme(isDark);
+  const filterTheme = getFilterTheme(theme.isDark);
   const getTheme = (isDark: boolean) => {
     if (isDark) {
       return 'dark';
@@ -173,7 +157,7 @@ export function QueryEditor({ query, onChange, datasource }: Props) {
       <InlineField label="Filters" tooltip="Filters for the query" grow={true} labelWidth={16}>
         <CodeMirror
           value={expression || ''}
-          theme={getTheme(isDark)}
+          theme={getTheme(theme.isDark)}
           extensions={[
             filterLanguage(),
             filterCompletion(datasource.post),
