@@ -38,7 +38,11 @@
   },
   "dependencies": {
     "grafanaDependency": ">=10.3.3",
-    "plugins": []
+    "plugins": [{
+      "id": "netsage-sankey-panel",
+      "name": "Sankey Panel",
+      "type": "panel"
+    }]
   },
   "routes": [
     {
