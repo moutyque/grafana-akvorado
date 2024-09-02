@@ -6,16 +6,12 @@ Plugin to display akvorado data
 
 This plugin aim to allow user to display [akvorado](https://github.com/akvorado/akvorado) data directly in Grafana.
 
-## Dependencies
-
-This plugin need [Sankey Panel plugin](https://grafana.com/grafana/plugins/netsage-sankey-panel/) to display sankey graph
-
 ## Run locally
 
 To run locally the plugin:
 
 ```
-nom install
+npm install
 npm run build
 npm run server
 ```
@@ -37,7 +33,12 @@ In grafana
 - Add new data source
 - Enter the base url; eg: https://demo.akvorado.net/
 
-## Query parameters
+
+## Building queries
+
+Queries can be built using pre-configured parameters.
+
+### Query parameters
 
 - Tye of query:
   - sankey
@@ -52,3 +53,11 @@ In grafana
   - _The number of return result is in fact limit +1 where +1 is the value "other" showing the aggregation of all other values_
 - Filters: expression to filter result
   - _The field is autocomplete and lint based on syntax checker_
+
+### Query examples
+
+Visualize the top 10 traffic per Source BGP AS for Ingress traffic, in bytes per second (pps)
+![example1.png](src/img/example1.png)
+
+Visualize the Top 10 Source BGP AS and Exporter Site for Ingress traffic, in packets per second (pps)
+![example2.png](src/img/example2.png)
