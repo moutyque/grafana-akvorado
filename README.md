@@ -16,12 +16,12 @@ npm run build
 npm run server
 ```
 
-### Use sankey plugin with docker-compose
+### Use sankey plugin with docker compose
 
 To display a sankey query you need the sankey plugin.
 You can download the plugin [here](https://grafana.com/grafana/plugins/netsage-sankey-panel/?tab=installation)
 Unzip the folder
-Add the path to the folder to docker-compose volumes:
+Add the path to the folder to docker compose volumes:
 `- /path/to/netsage-sankey-panel:/var/lib/grafana/plugins/netsage-sankey-panel`
 
 ## Add new data source
