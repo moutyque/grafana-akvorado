@@ -2,12 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
   "name": "Akvorado",
-  "id": "punetworkobservability-akvorado-datasource",
+  "id": "ovhcloudnetworkobservability-akvorado-datasource",
   "metrics": true,
   "info": {
     "description": "Akvorado netflow data source using akvorado api",
     "author": {
-      "name": "punetworkobservability"
+      "name": "ovhcloudnetworkobservability"
     },
     "keywords": ["datasource"],
     "logos": {
