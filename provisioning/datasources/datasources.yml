@@ -9,4 +9,4 @@ datasources:
     version: 1
     editable: true
     jsonData:
-      path: ' https://demo.akvorado.net/'
+      url: ' https://demo.akvorado.net/'
