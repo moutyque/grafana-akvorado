@@ -1,36 +1,20 @@
-import React, { ChangeEvent } from 'react';
-import { InlineField, Input } from '@grafana/ui';
+import { PureComponent} from 'react';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import { MyDataSourceOptions } from '../types';
+import {DataSourceHttpSettings} from "@grafana/ui";
+import React from 'react';
 
 interface Props extends DataSourcePluginOptionsEditorProps<MyDataSourceOptions> {}
-
-export function ConfigEditor(props: Props) {
-  const { onOptionsChange, options } = props;
-  const { jsonData } = options;
-
-  const onUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onOptionsChange({
-      ...options,
-      jsonData: {
-        ...jsonData,
-        url: event.target.value,
-      },
-    });
-  };
-
-  return (
-    <>
-      <InlineField label="Url" labelWidth={14} interactive tooltip={'Json field returned to frontend'}>
-        <Input
-          id="config-editor-url"
-          onChange={onUrlChange}
-          value={jsonData.url}
-          defaultValue={"https://demo.akvorado.net/"}
-          placeholder="Enter the akvorado console URL, e.g. https://akvorado.tools/"
-          width={40}
+interface State {}
+export class ConfigEditor extends PureComponent<Props, State> {
+  render() {
+    const { options } = this.props;
+    return (
+        <DataSourceHttpSettings
+            defaultUrl="https://demo.akvorado.net/"
+            dataSourceConfig={options}
+            onChange={this.props.onOptionsChange}
         />
-      </InlineField>
-    </>
-  );
+    );
+  }
 }
