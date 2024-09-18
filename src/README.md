@@ -1,51 +1,56 @@
-<!-- This README file is going to be the one displayed on the Grafana.com website for your plugin. Uncomment and replace the content here before publishing.
-
-Remove any remaining comments before publishing as these may be displayed on Grafana.com -->
-
 # Akvorado
 
 Akvorado netflow data source using akvorado api
 
-<!-- To help maximize the impact of your README and improve usability for users, we propose the following loose structure:
 
-**BEFORE YOU BEGIN**
-- Ensure all links are absolute URLs so that they will work when the README is displayed within Grafana and Grafana.com
-- Be inspired ✨
-  - [grafana-polystat-panel](https://github.com/grafana/grafana-polystat-panel)
-  - [volkovlabs-variable-panel](https://github.com/volkovlabs/volkovlabs-variable-panel)
-
-**ADD SOME BADGES**
-
-Badges convey useful information at a glance for users whether in the Catalog or viewing the source code. You can use the generator on [Shields.io](https://shields.io/badges/dynamic-json-badge) together with the Grafana.com API
-to create dynamic badges that update automatically when you publish a new version to the marketplace.
-
-- For the logo field use 'grafana'.
-- Examples (label: query)
-  - Downloads: $.downloads
-  - Catalog Version: $.version
-  - Grafana Dependency: $.grafanaDependency
-  - Signature Type: $.versionSignatureType
-
-Full example: ![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?logo=grafana&query=$.version&url=https://grafana.com/api/plugins/grafana-polystat-panel&label=Marketplace&prefix=v&color=F47A20)
-
-Consider other [badges](https://shields.io/badges) as you feel appropriate for your project.
-
-## Overview / Introduction
-Provide one or more paragraphs as an introduction to your plugin to help users understand why they should use it.
-
-Consider including screenshots:
-- in [plugin.json](https://grafana.com/developers/plugin-tools/reference/plugin-json#info) include them as relative links.
-- in the README ensure they are absolute URLs.
+## Introduction
+This plugin aim to allow user to display [akvorado](https://github.com/akvorado/akvorado) data directly in Grafana.
+![example1](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/example1.png?raw=true)
+![example2](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/example2.png?raw=true)
 
 ## Requirements
 List any requirements or dependencies they may need to run the plugin.
 
 ## Getting Started
-Provide a quick start on how to configure and use the plugin.
 
-## Documentation
-If your project has dedicated documentation available for users, provide links here. For help in following Grafana's style recommendations for technical documentation, refer to our [Writer's Toolkit](https://grafana.com/docs/writers-toolkit/).
+In Grafana:
 
+- Add new data source
+- Akvorado
+- Add new `Akvorado` data source
+
+![datasource.png](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/datasource.png?raw=true)
+- Enter the base url; eg: https://demo.akvorado.net/
+
+![connection.png](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/connection.png?raw=true)
+
+## Building queries
+
+Queries can be built using pre-configured parameters.
+
+### Query parameters
+
+- Tye of query:
+    - sankey
+        - _When using sankey at least two dimension must be used_
+    - timeseries
+- Unit
+    - l3bps
+    - pps
+- Dimension
+    - Multiselect list: values are fetch from the back end
+- Limit: number of returned result
+    - _The number of return result is in fact limit +1 where +1 is the value "other" showing the aggregation of all other values_
+- Filters: expression to filter result
+    - _The field is autocomplete and lint based on syntax checker_
+
+### Query examples
+
+Visualize the top 10 traffic per Source BGP AS for Ingress traffic, in bytes per second (pps)
+![example1.png](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/example1.png?raw=true)
+
+Visualize the Top 10 Source BGP AS and Exporter Site for Ingress traffic, in packets per second (pps)
+![example2.png](https://github.com/moutyque/grafana-akvorado/blob/main/src/img/example2.png?raw=true)
 ## Contributing
-Do you want folks to contribute to the plugin or provide feedback through specific means? If so, tell them how!
--->
+
+If you want to contribute feel free to open a PR in this [repo](https://github.com/moutyque/grafana-akvorado)
