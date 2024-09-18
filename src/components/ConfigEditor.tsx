@@ -26,6 +26,7 @@ export function ConfigEditor(props: Props) {
           id="config-editor-url"
           onChange={onUrlChange}
           value={jsonData.url}
+          defaultValue={"https://demo.akvorado.net/"}
           placeholder="Enter the akvorado console URL, e.g. https://akvorado.tools/"
           width={40}
         />
