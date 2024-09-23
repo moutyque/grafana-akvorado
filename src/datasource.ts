@@ -122,7 +122,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async request<T>(url: string, params?: string) {
     const response = getBackendSrv().fetch<T>({
-      url: `${this.baseUrl}/akvorado-root${url}${params?.length ? `?${params}` : ''}`,
+      url: `${this.baseUrl}/${url}${params?.length ? `?${params}` : ''}`,
     });
     return lastValueFrom(response);
   }
