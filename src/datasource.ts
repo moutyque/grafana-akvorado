@@ -5,7 +5,7 @@ import {
   DataQueryResponse,
   DataSourceApi,
   DataSourceInstanceSettings,
-  FieldType,
+  FieldType, Labels,
   toDataFrame,
 } from '@grafana/data';
 
@@ -63,8 +63,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         const response = await this.post<TimeseriesResponse>(endpoint, body, '');
         fields.push({ name: 'Time', type: FieldType.time, values: response.data.t });
         response.data.rows.forEach((r, i) => {
-          //const labels = this.buildLabels(target.dimensions!!, r); //TODO: add labels: Labels to type
-          fields.push({ name: r.join(' - '),  type: FieldType.number, values: response.data.points[i] });
+          fields.push({ type: FieldType.number, values: response.data.points[i], labels: this.buildLabels(target.dimensions!!, r) });
         });
       } else if (target.type === 'sankey') {
         const response = await this.post<SandkeyResponse>(endpoint, body, '');
@@ -102,6 +101,20 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
     const data = await Promise.all(dataPromises);
     return { data: data };
+  }
+
+
+  buildLabels(dimension: string[], r: string[]): Labels {
+    if (dimension.length !== r.length) {
+      throw new Error("The length of dimension and r must be the same.");
+    }
+
+    const labels: Labels = {};
+    for (let i = 0; i < dimension.length; i++) {
+      labels[dimension[i]] = r[i];
+    }
+
+    return labels;
   }
 
   private emptyResponse() {

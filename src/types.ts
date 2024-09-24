@@ -1,4 +1,4 @@
-import { DataSourceJsonData, FieldType } from '@grafana/data';
+import {DataSourceJsonData, FieldType, Labels} from '@grafana/data';
 import { DataQuery } from '@grafana/schema';
 export const DEFAULT_LIMIT = 10;
 
@@ -12,8 +12,9 @@ export interface MyQuery extends DataQuery {
 }
 
 export interface Field {
-  name: string;
+  name?: string;
   type: FieldType;
+  labels?: Labels;
   values: string[] | number[];
 }
 
