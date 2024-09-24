@@ -113,7 +113,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async post<T>(url: string, body?: {}, params?: string): Promise<FetchResponse<T>> {
     const response = getBackendSrv().fetch<T>({
-      url: `${this.baseUrl}/akvorado-root${url}${params?.length ? `?${params}` : ''}`,
+      url: `${this.baseUrl}${url}${params?.length ? `?${params}` : ''}`,
       data: body,
       method: 'POST',
     });
