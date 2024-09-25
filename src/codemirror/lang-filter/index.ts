@@ -5,8 +5,7 @@ import { LRLanguage, LanguageSupport } from '@codemirror/language';
 import { styleTags, tags as t } from '@lezer/highlight';
 import { createComplete } from './complete';
 import { parser } from './parser';
-import { FetchResponse } from '@grafana/runtime';
-import { ApiCompleteResult } from '../../types';
+import { DataSource } from 'datasource';
 
 export const FilterLanguage = LRLanguage.define({
   parser: parser.configure({
@@ -34,7 +33,7 @@ export function filterLanguage() {
   return new LanguageSupport(FilterLanguage);
 }
 export function filterCompletion(
-  fn: (url: string, body?: {}, params?: string) => Promise<FetchResponse<ApiCompleteResult>>
+  datasource: DataSource
 ) {
-  return FilterLanguage.data.of({ autocomplete: createComplete(fn) });
+  return FilterLanguage.data.of({ autocomplete: createComplete(datasource) });
 }

@@ -4,6 +4,7 @@ import { filterLanguage, filterCompletion } from '.';
 import { FetchResponse } from '@grafana/runtime';
 import { ApiCompleteResult } from '../../types';
 
+
 export interface Body {
   what: 'column' | 'operator' | 'value';
   column?: string;
@@ -12,7 +13,11 @@ export interface Body {
 
 describe('filter completion', () => {
   let requestBody: Body | undefined = undefined;
-  let mock: (url: string, body?: {}, params?: string) => Promise<FetchResponse<ApiCompleteResult>>;
+  let mockPost: (url: string, body?: {}, params?: string) => Promise<FetchResponse<ApiCompleteResult>>;
+
+   // Use the mocked DataSource class directly
+   const DataSource = require('./datasource').DataSource;
+   const dataSource = new DataSource(); // No need to pass instanceSettings
 
   async function get(doc: string): Promise<CompletionResult> {
     const cur: number = doc.indexOf('|');
@@ -20,7 +25,7 @@ describe('filter completion', () => {
     const state = EditorState.create({
       doc,
       selection: { anchor: cur },
-      extensions: [filterLanguage(), filterCompletion(mock), autocompletion()],
+      extensions: [filterLanguage(), filterCompletion(dataSource), autocompletion()],
     });
     return await state.languageDataAt<any>('autocomplete', cur)[0](new CompletionContext(state, cur, true));
   }
@@ -104,6 +109,17 @@ describe('filter completion', () => {
         throw new Error(`unhandled what: ${body.what}`);
     }
   }
+  jest.mock('./datasource', () => {
+    return {
+      DataSource: jest.fn().mockImplementation(() => {
+        return {
+          post: mockPost,
+        };
+      }),
+    };
+  });
+
+
 
   afterEach(() => {
     jest.restoreAllMocks();
@@ -111,7 +127,7 @@ describe('filter completion', () => {
   });
 
   beforeEach(() => {
-    mock = jest.fn().mockImplementation((b: string, options: RequestInit | undefined) => {
+    mockPost = jest.fn().mockImplementation((b: string, options: RequestInit | undefined) => {
       const body: Body = JSON.parse(b);
       requestBody = body;
       const data = mockedResults(body);

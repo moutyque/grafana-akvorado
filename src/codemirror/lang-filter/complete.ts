@@ -5,8 +5,8 @@ import { syntaxTree } from '@codemirror/language';
 
 import type { CompletionContext, CompletionResult } from '@codemirror/autocomplete';
 import type { SyntaxNode } from '@lezer/common';
-import { FetchResponse } from '@grafana/runtime';
 import { ApiCompleteResult } from '../../types';
+import { DataSource } from 'datasource';
 
 // Some helpers to match nodes.
 export const nodeAncestor = (node: SyntaxNode | null, names: string[]) => {
@@ -46,7 +46,7 @@ export const nodeRightMostChildBefore = (node: SyntaxNode | null, pos: number) =
 };
 
 export const createComplete =
-  (fn: (url: string, body?: {}, params?: string) => Promise<FetchResponse<ApiCompleteResult>>) =>
+  (datasource: DataSource) =>
   async (ctx: CompletionContext) => {
     const tree = syntaxTree(ctx.state);
 
@@ -61,7 +61,7 @@ export const createComplete =
       payload: { what: string; column?: string; prefix?: string },
       transform = (x: { label: string; detail?: string }) => x
     ) => {
-      const response = await fn.call('/api/v0/console/filter/complete', JSON.stringify(payload));
+      const response = await datasource.post<ApiCompleteResult>('/api/v0/console/filter/complete', JSON.stringify(payload));
       if (!response.ok) {
         return;
       }
