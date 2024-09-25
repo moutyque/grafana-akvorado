@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
-import {InlineField, Input, Stack, Select, AsyncMultiSelect, useTheme2} from '@grafana/ui';
+import { InlineField, Input, Stack, Select, AsyncMultiSelect, useTheme2, CollapsableSection } from '@grafana/ui';
 import { QueryEditorProps, SelectableValue, AppEvents } from '@grafana/data';
 import { DataSource, queryTypes, queryUnits } from '../datasource';
 import { Configuration, DEFAULT_LIMIT, MyDataSourceOptions, MyQuery } from '../types';
@@ -112,84 +112,95 @@ export function QueryEditor({ query, onChange, datasource }: Props) {
     });
 
   return (
-    <Stack gap={1}>
-      <InlineField label="Type of query" labelWidth={16} tooltip="Select the type of query">
-        <Select value={type} options={queryTypeOptions()} onChange={onTypeChange} width={20} />
-      </InlineField>
-      <InlineField label="Unit" labelWidth={16} tooltip="Select the unit">
-        <Select value={unit} options={queryUnitsOptions()} onChange={onUnitChange} width={20} />
-      </InlineField>
-      <InlineField label="Dimensions" labelWidth={16} tooltip="Select dimensions">
-        <AsyncMultiSelect
-          defaultOptions
-          placeholder="Select dimensions"
-          loadOptions={loadAsyncDimensions}
-          value={uiDimensions}
-          onChange={onDimensionsChange}
-          width={32}
-        />
-      </InlineField>
-      <InlineField label="Limit" labelWidth={16} tooltip="Number of results returned by the query (max 50)">
-        <Input
-          id="limit"
-          type="text"
-          value={limit || DEFAULT_LIMIT}
-          onChange={onLimitChange}
-          placeholder="Enter limit"
-          onKeyDown={(event) => {
-            const key = event.key;
-            if (
-              !(
-                /[0-9]/.test(key) ||
-                key === 'Backspace' ||
-                key === 'Delete' ||
-                key === 'ArrowLeft' ||
-                key === 'ArrowRight'
-              )
-            ) {
-              event.preventDefault();
-            }
-          }}
-          width={10}
-        />
-      </InlineField>
 
-      <InlineField label="Filters" tooltip="Filters for the query" grow={true} labelWidth={16}>
-        <CodeMirror
-          value={expression || ''}
-          theme={getTheme(theme.isDark)}
-          extensions={[
-            filterLanguage(),
-            filterCompletion(datasource.post),
-            autocompletion({ icons: false }),
-            createLinter(datasource),
-            history(),
-            ...filterTheme,
-            placeholder('Filter expression'),
-            EditorView.lineWrapping,
-            EditorView.updateListener.of((viewUpdate) => {
-              if (viewUpdate.docChanged) {
-                setExpression(viewUpdate.state.doc.toString());
-                onChange({ ...query, expression: viewUpdate.state.doc.toString() });
+    <Stack gap={1} direction={'column'}>
+      <Stack gap={1}>
+        <InlineField label="Type of query" labelWidth={16} tooltip="Select the type of query">
+          <Select value={type} options={queryTypeOptions()} onChange={onTypeChange} width={20} />
+        </InlineField>
+        <InlineField label="Unit" labelWidth={16} tooltip="Select the unit">
+          <Select value={unit} options={queryUnitsOptions()} onChange={onUnitChange} width={20} />
+        </InlineField>
+        <InlineField label="Dimensions" labelWidth={16} tooltip="Select dimensions">
+          <AsyncMultiSelect
+            defaultOptions
+            placeholder="Select dimensions"
+            loadOptions={loadAsyncDimensions}
+            value={uiDimensions}
+            onChange={onDimensionsChange}
+            width={32}
+          />
+        </InlineField>
+        <InlineField label="Limit" labelWidth={16} tooltip="Number of results returned by the query (max 50)">
+          <Input
+            id="limit"
+            type="text"
+            value={limit || DEFAULT_LIMIT}
+            onChange={onLimitChange}
+            placeholder="Enter limit"
+            onKeyDown={(event) => {
+              const key = event.key;
+              if (
+                !(
+                  /[0-9]/.test(key) ||
+                  key === 'Backspace' ||
+                  key === 'Delete' ||
+                  key === 'ArrowLeft' ||
+                  key === 'ArrowRight'
+                )
+              ) {
+                event.preventDefault();
               }
-              if (viewUpdate.focusChanged) {
-                if (!viewUpdate.view.hasFocus) {
-                  // Trim spaces
-                  const index = viewUpdate.state.doc.toString().search(/\s+$/);
-                  if (index !== -1) {
-                    viewUpdate.view.dispatch({
-                      changes: {
-                        from: index,
-                        to: viewUpdate.state.doc.length,
-                      },
-                    });
+            }}
+            width={10}
+          />
+        </InlineField>
+        <InlineField label="Filters" tooltip="Filters for the query" grow={true} labelWidth={16}>
+          <CodeMirror
+            value={expression || ''}
+            theme={getTheme(theme.isDark)}
+            extensions={[
+              filterLanguage(),
+              filterCompletion(datasource),
+              autocompletion({ icons: false }),
+              createLinter(datasource),
+              history(),
+              ...filterTheme,
+              placeholder('Filter expression'),
+              EditorView.lineWrapping,
+              EditorView.updateListener.of((viewUpdate) => {
+                if (viewUpdate.docChanged) {
+                  setExpression(viewUpdate.state.doc.toString());
+                  onChange({ ...query, expression: viewUpdate.state.doc.toString() });
+                }
+                if (viewUpdate.focusChanged) {
+                  if (!viewUpdate.view.hasFocus) {
+                    // Trim spaces
+                    const index = viewUpdate.state.doc.toString().search(/\s+$/);
+                    if (index !== -1) {
+                      viewUpdate.view.dispatch({
+                        changes: {
+                          from: index,
+                          to: viewUpdate.state.doc.length,
+                        },
+                      });
+                    }
                   }
                 }
-              }
-            }),
-          ]}
-        />
-      </InlineField>
-    </Stack>
+              }),
+            ]}
+          />
+        </InlineField>
+      </Stack>
+      <Stack>
+        <CollapsableSection label="Options" isOpen={false}>
+        <InlineField label="Legend" labelWidth={16} tooltip="Series name override or template. Ex {{hostname}} will be replaced with label values for hostname.">
+          <Select value={type} options={queryTypeOptions()} onChange={onTypeChange} width={20} />
+        </InlineField>
+        </CollapsableSection>
+      </Stack>
+    </Stack >
+
+
   );
 }
