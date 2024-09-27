@@ -1,5 +1,4 @@
 import { test, expect } from '@grafana/plugin-e2e';
-import { MyDataSourceOptions, MySecureJsonData } from '../src/types';
 
 test('"Save & test" should be successful when configuration is valid', async ({
   createDataSourceConfigPage,
@@ -28,6 +27,7 @@ test('"Save & test" should display success alert box when config is valid', asyn
     configPage.datasource.uid,
     configPage.datasource.id.toString()
   )}/health`;
+  console.log("healthCheckPath: " +healthCheckPath)
   await expect(configPage.saveAndTest({ path: healthCheckPath })).not.toBeOK();
-  await expect(configPage).toHaveAlert('error');
+  expect(configPage).toHaveAlert('error');
 });
