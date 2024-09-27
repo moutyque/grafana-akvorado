@@ -30,6 +30,6 @@ git tag "v$new_version"
 
 # Push the commit and tag
 git push origin main
-git push origin "v$new_version"
+git push origin tag "v$new_version"
 
 echo "Version bumped to $new_version and pushed to remote repository."
