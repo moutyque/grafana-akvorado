@@ -16,7 +16,7 @@ describe('filter completion', () => {
   let mockPost: (url: string, body?: {}, params?: string) => Promise<FetchResponse<ApiCompleteResult>>;
 
    // Use the mocked DataSource class directly
-   const DataSource = require('./datasource').DataSource;
+   const DataSource = require('../../datasource').DataSource;
    const dataSource = new DataSource(); // No need to pass instanceSettings
 
   async function get(doc: string): Promise<CompletionResult> {
@@ -109,7 +109,22 @@ describe('filter completion', () => {
         throw new Error(`unhandled what: ${body.what}`);
     }
   }
-  jest.mock('./datasource', () => {
+
+
+
+  jest.mock('../../datasource', () => {
+
+    mockPost = jest.fn().mockImplementation((url:string, b: string) => {
+      const body: Body = JSON.parse(b);
+      requestBody = body;
+      const data = mockedResults(body);
+      const mockResponse = {
+        ok: true,
+        data: data,
+      };
+      return Promise.resolve(mockResponse as unknown as Response);
+    });
+
     return {
       DataSource: jest.fn().mockImplementation(() => {
         return {
@@ -126,18 +141,6 @@ describe('filter completion', () => {
     requestBody = undefined;
   });
 
-  beforeEach(() => {
-    mockPost = jest.fn().mockImplementation((b: string, options: RequestInit | undefined) => {
-      const body: Body = JSON.parse(b);
-      requestBody = body;
-      const data = mockedResults(body);
-      const mockResponse = {
-        ok: true,
-        data: data,
-      };
-      return Promise.resolve(mockResponse as unknown as Response);
-    });
-  });
 
   it('completes column names', async () => {
     const { from, to, options } = await get('S|');
