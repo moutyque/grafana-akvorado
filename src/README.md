@@ -30,7 +30,7 @@ Queries can be built using pre-configured parameters.
 
 ### Query parameters
 
-- Tye of query:
+- Type of query:
     - sankey
         - _When using sankey at least two dimension must be used_
     - timeseries
