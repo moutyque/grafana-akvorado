@@ -14,6 +14,7 @@ export function ConfigEditor(props: Props) {
         defaultUrl="https://demo.akvorado.net"
         dataSourceConfig={options}
         onChange={onOptionsChange}
+        sigV4AuthToggleEnabled={true}
       />
     </>
   );
