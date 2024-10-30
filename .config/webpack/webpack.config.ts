@@ -10,9 +10,10 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import LiveReloadPlugin from 'webpack-livereload-plugin';
 import path from 'path';
+import WebpackHookPlugin from 'webpack-hook-plugin';
 import ReplaceInFileWebpackPlugin from 'replace-in-file-webpack-plugin';
-import { Configuration } from 'webpack';
 
+import { Configuration } from 'webpack';
 import { getPackageJson, getPluginJson, hasReadme, getEntries, isWSL } from './utils';
 import { SOURCE_DIR, DIST_DIR } from './constants';
 
@@ -195,6 +196,9 @@ const config = async (env): Promise<Configuration> => {
             }),
           ]
         : []),
+      new WebpackHookPlugin({
+          onBuildEnd: ['node generate-licenses.js']
+      })
     ],
 
     resolve: {
