@@ -10,7 +10,6 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import LiveReloadPlugin from 'webpack-livereload-plugin';
 import path from 'path';
-import WebpackHookPlugin from 'webpack-hook-plugin';
 import ReplaceInFileWebpackPlugin from 'replace-in-file-webpack-plugin';
 
 import { Configuration } from 'webpack';
@@ -195,9 +194,6 @@ const config = async (env): Promise<Configuration> => {
             }),
           ]
         : []),
-      new WebpackHookPlugin({
-        onBuildEnd: ['node generate-licenses.js'],
-      }),
     ],
 
     resolve: {

@@ -11,12 +11,12 @@ services:
         grafana_version: ${GRAFANA_VERSION:-10.3.3}
         development: ${DEVELOPMENT:-false}
     ports:
-      - 3000:3000/tcp
+      - 10944:3000/tcp
     volumes:
       - ./dist:/var/lib/grafana/plugins/ovhcloudnetworkobservability-akvorado-datasource
       - ./provisioning:/etc/grafana/provisioning
       - .:/root/ovhcloudnetworkobservability-akvorado-datasource
-
+      - ./netsage-sankey-panel:/var/lib/grafana/plugins/netstage-sankey-panel
     environment:
       NODE_ENV: development
       GF_LOG_FILTERS: plugin.ovhcloudnetworkobservability-akvorado-datasource:debug

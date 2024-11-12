@@ -147,7 +147,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     const defaultErrorMessage = 'Cannot connect to API';
 
     try {
-      const response = await this.request('/api/v0/healthcheck');
+      const response = await this.request('api/v0/healthcheck');
       if (response.status === 200) {
         return {
           status: 'success',

@@ -36,7 +36,7 @@ const licenses = Array.from(licensesSet).sort();
 const sortedPackages = packages.sort((a, b) => a.name.localeCompare(b.name));
 
 // Create directories and copy license files
-const outputDir = path.join(__dirname, 'dist/LICENSES');
+const outputDir = path.join(__dirname, 'LICENSES');
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
@@ -84,4 +84,4 @@ const outputSummary = `Licences:\n${licenses.join('\n')}\n\nPackages:\n${sortedP
 const outputSummaryFilePath = path.join(outputDir, 'LICENCES.txt');
 fs.writeFileSync(outputSummaryFilePath, outputSummary, 'utf8');
 
-console.log('License information has been written to dist/LICENSES/LICENCES.txt');
+console.log('License information has been written to LICENSES/LICENCES.txt');
